@@ -1,0 +1,90 @@
+======================================================================
+ISIT 2026 QHack — Verification Run
+Started: 2026-06-30 17:33:46
+======================================================================
+
+──────────────────────────────────────────────────
+Running: plot_graph
+──────────────────────────────────────────────────
+  N=8 K=3 edges=26
+  edge weight range: 0.119 .. 1.000
+  Saved: fig_interference_graph.png
+  >>> DONE
+
+──────────────────────────────────────────────────
+Running: check_qubo
+──────────────────────────────────────────────────
+  Graph: N=8 K=3 edges=26
+  brute-force optimum = 1.8057
+  greedy             = 1.8532  (gap +0.0475)
+  one-hot argmin = 1.8057  matches brute: True  (5.2s)
+  binary  argmin = 1.8057  matches brute: True  (58.9s)
+  qubits: one-hot=24  binary=16
+  PASS: check #1 QUBO correctness
+  >>> PASS
+
+──────────────────────────────────────────────────
+Running: check_qaoa
+──────────────────────────────────────────────────
+  N=8 K=3  brute=1.8057  greedy=1.8532
+    run 1/3 seed=42: obj=1.9219  gap=+0.1162  iters=28  time=40s  beat_greedy=✗
+    run 2/3 seed=43: obj=1.8061  gap=+0.0004  iters=31  time=44s  beat_greedy=✓
+    run 3/3 seed=44: obj=1.8061  gap=+0.0004  iters=27  time=42s  beat_greedy=✓
+  best (seed=43): obj=1.8061  feasible=True  gap=+0.0004
+  assignment: {0: 0, 1: 2, 2: 2, 3: 1, 4: 0, 5: 2, 6: 1, 7: 0}
+  Saved: fig_qaoa_assignment.png
+  PASS: check #4 cold QAOA quality  (feasible=True better_than_greedy=True)
+  >>> PASS
+
+──────────────────────────────────────────────────
+Running: check_dynamics
+──────────────────────────────────────────────────
+  Base graph: N=8 K=3 edges=26
+  maxiter=25  snapshots=5
+  snap    brute     cold     warm   c_gap   w_gap  warm<
+  ------------------------------------------------------
+     0    1.806    1.872    1.872   0.067   0.067       
+     1    1.065    1.480    1.080   0.415   0.015    YES
+     2    1.524    1.576    1.524   0.053   0.000    YES
+     3    1.794    2.004    1.850   0.209   0.056    YES
+     4    1.312    1.457    1.336   0.145   0.025    YES
+  Mean gap:  cold=0.1778  warm=0.0325
+  Gap reduction: +0.1452
+  Warm better on 4/5 snapshots
+  Time: 360s
+  Saved: fig_mobility_dynamics.png
+  PASS: warm gap <= cold gap  (mean_warm=0.0325 mean_cold=0.1778)
+  >>> PASS
+
+──────────────────────────────────────────────────
+Running: check_encoding
+──────────────────────────────────────────────────
+  N=8 K=3 (210s)
+  N=10 K=3 (111s)
+  N=12 K=3 (276s)
+      graph     enc  qubits   depth   gates  feas%
+      N8_K3  onehot      24      78     342    100
+      N8_K3  binary      16      90     336    100
+     N10_K3  onehot      30     102     522     --
+     N10_K3  binary      20     114     546    100
+     N12_K3  onehot      36     126     720     --
+     N12_K3  binary      24     138     780    100
+  Saved: fig_encoding_tradeoff.png
+  PASS: check #3 binary ≤ onehot qubits
+  >>> PASS
+
+──────────────────────────────────────────────────
+Running: check_scale
+──────────────────────────────────────────────────
+  mid-size: N=10 K=3 edges=38
+  qubits: one-hot=30 binary=20  (brute=59049 assignments)
+  greedy = 3.3808
+  QAOA (binary) = 2.9666  feasible=True  iters=30  time=6s
+  QAOA vs greedy: -0.4142
+  PASS: check #5 scalability  (feasible=True better_than_greedy=True)
+  >>> PASS
+
+======================================================================
+Finished: 2026-06-30 17:53:07
+Results: 6 passed, 0 failed out of 6
+======================================================================
